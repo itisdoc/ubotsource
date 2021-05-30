@@ -2,6 +2,7 @@
 const Discord = require('discord.js');
 require('discord-reply');
 const client = new Discord.Client;
+const disbut = require('discord-buttons');
 const token = process.env.TOKEN;
 const prefix = '!';
 const botowner = '511699466399514627';
@@ -16,6 +17,16 @@ client.on('ready', () => {
   setInterval(function(){
         client.user.setActivity(`!help | Guilds: ${client.guilds.cache.size} | vpnai.net`);
         }, 1000);
+});
+
+client.on('message', message => {
+if (message.content.startsWith('!buttontest')) {
+let button = new MessageButton()
+    .setStyle('gray')
+    .setLabel('My first button!')
+    .setURL('https://google.com'); //if you use the "url" style, you must provide url using ".setURL()" method
+    message.lineReplyNoMention(`Testing message \n ${button}`)
+}
 });
 
 client.on('message', message => {
@@ -49,6 +60,7 @@ message.lineReplyNoMention('<:uncheck:848326675687407616> You sent an invalid co
 
 client.on('message', message => {
   if (message.content.startsWith('!help')) {
+    if (message.content == '!help moderation' || message.content == '!help polls' || message.content == '!help utility' || message.content == '!help') {
    const helpEmbed = new Discord.MessageEmbed()
 	.setColor('#0099ff')
 	.setTitle('U-Bot - Help')
@@ -58,6 +70,9 @@ client.on('message', message => {
 	.setFooter('Made using discord.js', 'https://i.imgur.com/wSTFkRM.png');
 
 message.react("<:checkhelp:848017844041809991>").then(  message.lineReplyNoMention(helpEmbed))
+    } else {
+      return
+    }
 }
 });
 
