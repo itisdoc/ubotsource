@@ -25,7 +25,7 @@ let button = new MessageButton()
     .setStyle('gray')
     .setLabel('My first button!')
     .setURL('https://google.com'); //if you use the "url" style, you must provide url using ".setURL()" method
-    message.lineReplyNoMention(`Testing message \n ${button}`)
+    message.lineReplyNoMention("Testing message", button)
 }
 });
 
