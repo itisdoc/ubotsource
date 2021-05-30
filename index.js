@@ -11,7 +11,7 @@ function keepAlive() {
 
 
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  console.log(`Logged in as ${client.user.tag}! Status: ${client.user.presence.status}`);
   client.user.setStatus('dnd');
   setInterval(function(){
         client.user.setActivity(`!help | Guilds: ${client.guilds.cache.size} | vpnai.net`);
@@ -348,5 +348,4 @@ message.channel.send(`${user.displayAvatarURL()}`)
 });
 
 client.login(token);
-console.log('U-Bot is online!');
 keepAlive();
