@@ -326,7 +326,7 @@ client.on('message', message => {
     const args = message.content.slice(prefix.length).trim().split(' ');
     if (message.author.id == botowner) {
     client.user.setUsername(args.splice(1).join(" "));
-    message.cha
+    message.channel.send(`Changed Bot Nickname to ${client.username}`)
     message.catch(err)
     } else {
       message.channel.send(`${message.author.username}, you are not the owner of the bot!`)
