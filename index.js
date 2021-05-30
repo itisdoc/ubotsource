@@ -49,8 +49,6 @@ message.lineReplyNoMention('<:uncheck:848326675687407616> You sent an invalid co
 
 client.on('message', message => {
   if (message.content.startsWith('!help')) {
-    const args = message.content.slice(prefix.length).trim().split(' ');
-    if (args.splice(1).join(" ") == "server") {
    const helpEmbed = new Discord.MessageEmbed()
 	.setColor('#0099ff')
 	.setTitle('U-Bot - Help')
@@ -60,16 +58,7 @@ client.on('message', message => {
 	.setFooter('Made using discord.js', 'https://i.imgur.com/wSTFkRM.png');
 
 message.react("<:checkhelp:848017844041809991>").then(  message.lineReplyNoMention(helpEmbed))
-  } else {
- if (message.content == '!help moderation' || message.content == '!help polls' || message.content == '!help utility' || message.content == '!help') {
-  return
-  } else {
-    var helpcommands = ["utility", "polls", "moderation"][Math.floor(Math.random() * 3)]
-
-message.lineReplyNoMention('<:uncheck:848326675687407616> You sent an invalid help command. How about you try ``!help ' + helpcommands + '``?')
-  }
-    }
-      }
+}
 });
 
 client.on('message', message => {
