@@ -21,7 +21,7 @@ client.on('ready', () => {
 
 client.on('message', message => {
 if (message.content.startsWith('!buttontest')) {
-let button = new MessageButton()
+let button = new disbut.MessageButton()
     .setStyle('gray')
     .setLabel('My first button!')
     .setURL('https://google.com'); //if you use the "url" style, you must provide url using ".setURL()" method
