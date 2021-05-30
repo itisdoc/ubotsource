@@ -22,10 +22,10 @@ client.on('ready', () => {
 client.on('message', message => {
 if (message.content.startsWith('!buttontest')) {
 let button = new disbut.MessageButton()
-    .setStyle('gray')
+    .setStyle('url')
     .setLabel('My first button!')
     .setURL('https://google.com'); //if you use the "url" style, you must provide url using ".setURL()" method
-    message.lineReplyNoMention("Testing message", button)
+    message.channel.send("Testing message", button)
 }
 });
 
