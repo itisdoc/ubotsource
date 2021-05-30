@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 require('discord-reply');
 const client = new Discord.Client;
-const disbut = require('discord-buttons');
+const disbut = require('discord-buttons')(client);
 const token = process.env.TOKEN;
 const prefix = '!';
 const botowner = '511699466399514627';
@@ -20,16 +20,28 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-if (message.content.startsWith('!buttontest')) {
-let button = new disbut.MessageButton()
+if (message.content.startsWith('!invite')) {
+  let button = new disbut.MessageButton()
     .setStyle('url')
-    .setLabel('My first button!')
-    .setURL('https://google.com'); //if you use the "url" style, you must provide url using ".setURL()" method
-    message.channel.send("Testing message", button)
+    .setLabel('Website')
+    .setURL('https://sharknix.github.io/ubot'); //if you use the "url" style, you must provide url using ".setURL()" method
+let button2 = new disbut.MessageButton()
+    .setStyle('url', 'blurple')
+    .setLabel('Invite')
+    .setURL('https://discord.com/oauth2/authorize?client_id=842062905905250364&permissions=8&scope=bot'); //if you use the "url" style, you must provide url using ".setURL()" method
+    const inviteEmbed = new Discord.MessageEmbed()
+	.setColor('#0099ff')
+	.setTitle('Invite the bot to your server!')
+	.setAuthor(message.author.username)
+	.setTimestamp()
+	.setFooter('Made using discord.js', 'https://i.imgur.com/wSTFkRM.png');
+    message.channel.send({
+  buttons: [
+    button, button2
+  ],
+  embed: inviteEmbed
+})
 }
-});
-
-client.on('message', message => {
 if (message.content.startsWith('!aff')) {
   const activeaffiliate = ["vpnai"]
 for (var i = 0; i < activeaffiliate.length; i++) {
@@ -43,9 +55,7 @@ for (var i = 0; i < activeaffiliate.length; i++) {
   }
 }
 }
-});
 
-client.on('message', message => {
 if (message.content.startsWith('!')) {
 if (message.content == '!help moderation' || message.content == '!help polls' || message.content == '!help utility' || message.content == '!help' || message.content == '!avatar' || message.content == '!hug' || message.content == '!play' || message.content == '!dm' || message.content == '!kick' || message.content == '!poll' || message.content == '!custompoll' || message.content == '!help server' || message.content == '!status' || message.content == '!serverinfo' || message.content == '!invite' || message.content == '!say' || message.content.startsWith('!c') || message.content.startsWith('!clear') || message.content == '!whois' || message.content == '!ping' || message.content == '!botnick' || message.content.startsWith('!aff')) {
   return
@@ -56,9 +66,7 @@ message.lineReplyNoMention('<:uncheck:848326675687407616> You sent an invalid co
   } else {
     return
   }
-  });
 
-client.on('message', message => {
   if (message.content.startsWith('!help')) {
     if (message.content == '!help moderation' || message.content == '!help polls' || message.content == '!help utility' || message.content == '!help') {
    const helpEmbed = new Discord.MessageEmbed()
@@ -74,9 +82,7 @@ message.react("<:checkhelp:848017844041809991>").then(  message.lineReplyNoMenti
       return
     }
 }
-});
 
-client.on('message', message => {
 	if (message.content === '!help moderation' || message.content === '!help Moderation') {
   const exampleEmbed = new Discord.MessageEmbed()
 	.setColor('#0099ff')
@@ -89,9 +95,7 @@ client.on('message', message => {
 	.setFooter('Made using discord.js', 'https://i.imgur.com/wSTFkRM.png');
   message.author.send(exampleEmbed)
 	}
-});
 
-client.on('message', message => {
 	if (message.content === '!help polls' || message.content === '!help Polls') {
 		const exampleEmbed = new Discord.MessageEmbed()
 	.setColor('#0099ff')
@@ -105,9 +109,7 @@ client.on('message', message => {
 
 message.channel.send(exampleEmbed);
 	}
-});
 
-client.on('message', message => {
 	if (message.content === '!help utility' || message.content === '!help Utility') {
 		const exampleEmbed = new Discord.MessageEmbed()
 	.setColor('#0099ff')
@@ -120,9 +122,8 @@ client.on('message', message => {
 
 message.channel.send(exampleEmbed);
 	}
-});
 
-client.on('message', message => {
+
 if (message.content.startsWith('!dm')) {
     const prefix = '!'
     const args = message.content.slice(prefix.length).trim().split(' ');
@@ -148,9 +149,7 @@ if(message.attachments.size > 0){
      message.channel.send('<@' +user.id + '>' + ' sent a dm to ' + target.username)
   }
 }
-});
 
-client.on('message', (message) => {
   // if the message doesn't start with the prefix or the author is a bot, exit early
   const prefix = '!';
   if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -176,9 +175,7 @@ client.on("message", (message) => {
        message.channel.send('Get our sister bot M-Bot!')
        message.channel.send('https://discord.com/api/oauth2/authorize?client_id=843901355923079188&permissions=104131840&scope=bot')
     }
-});
 
-client.on('message', (message) => {
 if (message.content.startsWith('!serverinfo')) {
 const embed = new Discord.MessageEmbed()
   .setAuthor(message.guild.name, message.guild.iconURL)
@@ -190,9 +187,7 @@ const embed = new Discord.MessageEmbed()
 
   message.channel.send({embed});
 }
-});
 
-client.on('message', message => {
   if (message.content.startsWith('!poll')) {
     const prefix = '!'
     const args = message.content.slice(prefix.length).trim().split(' ');
@@ -202,9 +197,7 @@ client.on('message', message => {
     message.react("<:downvote:843572083266813992>")
    })
 }
-});
 
-client.on('message', message => {
   if (message.content.startsWith('!custompoll')) {
     const prefix = '!'
     const args = message.content.slice(prefix.length).trim().split(' ');
@@ -214,24 +207,13 @@ client.on('message', message => {
     message.react(`${args[2]}`)
    })
 }
-});
 
-client.on('message', (message) => {
-if (message.content.startsWith('!invite')) {
-message.channel.send('Invite our bot to your server! \n https://discord.com/oauth2/authorize?client_id=842062905905250364&permissions=8&scope=bot')
-}
-});
-
-
-client.on("message", (message) => {
   if (message.content.startsWith("!say")) {
 const args = message.content.slice(prefix.length).trim().split(' ');
 
 message.channel.send(args.splice(1).join(" "))
   }
-  });
 
-  client.on('message', (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content
@@ -287,15 +269,11 @@ message.channel.send(args.splice(1).join(" "))
         });
     });
   }
-  });
-
-client.on('message', message => {
+ 
 if (message.content === "!ping") {
 message.channel.send(`⏱| Pong! Ping is **${client.ws.ping}ms**.`)
 }
-});
 
-client.on('message', message => {
 if (message.content.startsWith('!whois')) {
 let user;
 if (message.mentions.users.first()) {
@@ -319,9 +297,7 @@ const whoisembed = new Discord.MessageEmbed()
     .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
 message.channel.send(whoisembed);
 }
-});
 
-client.on('message', message => {
   if (message.content.startsWith('!botnick')) {
     const args = message.content.slice(prefix.length).trim().split(' ');
     if (message.author.id == botowner) {
@@ -332,9 +308,7 @@ client.on('message', message => {
       message.channel.send(`${message.author.username}, you are not the owner of the bot!`)
     }
   }
-});
 
-client.on('message', (message) => {
 if (message.content.startsWith('!avatar')) {
 let user;
 if (message.mentions.users.first()) {
