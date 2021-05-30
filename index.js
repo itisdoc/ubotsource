@@ -40,10 +40,7 @@ if (message.content == '!help moderation' || message.content == '!help polls' ||
   return
   } else {
     var commands = ["help moderation", "help polls", "help utility", "whois", "dm", "play", "kick", "clear", "c", "say", "ping", "botnick", "help"][Math.floor(Math.random() * 13)];
-if (message.content.startsWith('!help')) {
-} else {
 message.lineReplyNoMention('<:uncheck:848326675687407616> You sent an invalid command. How about you try ``!' + commands + '``?')
-  }
   }
   } else {
     return
