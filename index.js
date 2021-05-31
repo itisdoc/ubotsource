@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 require('discord-reply');
 const client = new Discord.Client;
-const disbut = require('discord-buttons');
+const disbut = require('discord-buttons')(client);
 const token = process.env.TOKEN;
 const prefix = '!';
 const botowner = '511699466399514627';
@@ -20,9 +20,9 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-if (message.content.startsWith('!buttontest')) {
+if (message.content.startsWith('!invite')) {
 let button = new disbut.MessageButton()
-    .setStyle('url')
+    .setStyle('blurple')
     .setLabel('Website')
     .setURL('https://sharknix.github.io/ubot'); //if you use the "url" style, you must provide url using ".setURL()" method
     let button2 = new disbut.MessageButton()
@@ -37,7 +37,10 @@ let button = new disbut.MessageButton()
 	.setTimestamp()
 	.setFooter('Made using discord.js', 'https://i.imgur.com/wSTFkRM.png');
 
-    message.channel.send(inviteEmbed, button, button2)
+    message.channel.send({buttons: [ button, button2
+  ],
+  embed: inviteEmbed
+});
 }
 });
 
@@ -59,7 +62,7 @@ for (var i = 0; i < activeaffiliate.length; i++) {
 
 client.on('message', message => {
 if (message.content.startsWith('!')) {
-if (message.content == '!help moderation' || message.content == '!help polls' || message.content == '!help utility' || message.content == '!help' || message.content == '!avatar' || message.content == '!hug' || message.content == '!play' || message.content == '!dm' || message.content == '!kick' || message.content == '!poll' || message.content == '!custompoll' || message.content == '!help server' || message.content == '!status' || message.content == '!serverinfo' || message.content == '!invite' || message.content == '!say' || message.content.startsWith('!c') || message.content.startsWith('!clear') || message.content == '!whois' || message.content == '!ping' || message.content == '!botnick' || message.content.startsWith('!aff')) {
+if (message.content == '!help moderation' || message.content == '!help polls' || message.content == '!help utility' || message.content == '!help' || message.content.startsWith('!avatar') || message.content == '!play' || message.content.startsWith('!dm') || message.content.startsWith('!kick') || message.content.startsWith('!poll') || message.content.startsWith('!custompoll') || message.content == '!help server' || message.content.startsWith('!status') || message.content == '!serverinfo' || message.content == '!invite' || message.content.startsWith('!say') || message.content.startsWith('!c') || message.content.startsWith('!clear') || message.content.startsWith('!whois') || message.content == '!ping' || message.content.startsWith('!botnick') || message.content.startsWith('!aff')) {
   return
   } else {
     var commands = ["help moderation", "help polls", "help utility", "whois", "dm", "play", "kick", "clear", "c", "say", "ping", "botnick", "help"][Math.floor(Math.random() * 13)];
@@ -73,10 +76,11 @@ message.lineReplyNoMention('<:uncheck:848326675687407616> You sent an invalid co
 client.on('message', message => {
   if (message.content.startsWith('!help')) {
     if (message.content == '!help moderation' || message.content == '!help polls' || message.content == '!help utility' || message.content == '!help') {
+      if (message.content == '!help moderation' || message.content == '!help polls' || message.content == '!help utility') { return }
    const helpEmbed = new Discord.MessageEmbed()
 	.setColor('#0099ff')
 	.setTitle('U-Bot - Help')
-	.setAuthor('FireyAPI#7685')
+	.setAuthor(message.author.username, message.author.avatarURL())
 	.setDescription('Catagories:' + '\n' + '```' + 'Moderation' + '```' + '```' + 'Utility' + '```' + '```' + 'Polls' + '```' + '\n' + 'To see commands in a specific catagory, do: ' + '``' + '!help ' + '[category]' + '``')
 	.setTimestamp()
 	.setFooter('Made using discord.js', 'https://i.imgur.com/wSTFkRM.png');
@@ -93,13 +97,13 @@ client.on('message', message => {
   const exampleEmbed = new Discord.MessageEmbed()
 	.setColor('#0099ff')
 	.setTitle('U-Bot - Help')
-	.setAuthor(message.author.username, message.author.avatarURL, 'https://github.com/sharknix')
+	.setAuthor(message.author.username, message.author.avatarURL(), 'https://github.com/sharknix')
 	.setDescription('**Moderation** \n \n' + '``' + '!kick - Kicks a user mentioned.' + '``' + '\n' + '``' + '!ban - Bans a person mentioned.' + '``')
 	.setThumbnail('https://cole.needs.rest/korm0zu8i9a.svg')
 
 	.setTimestamp()
 	.setFooter('Made using discord.js', 'https://i.imgur.com/wSTFkRM.png');
-  message.author.send(exampleEmbed)
+  message.channel.send(exampleEmbed)
 	}
 });
 
@@ -108,7 +112,7 @@ client.on('message', message => {
 		const exampleEmbed = new Discord.MessageEmbed()
 	.setColor('#0099ff')
 	.setTitle('U-Bot - Help')
-	.setAuthor(message.author.username, message.author.avatarURL)
+	.setAuthor(message.author.username, message.author.avatarURL())
 	.setDescription('**Polls** \n \n' + '``' + '!poll - Makes a poll with upvote and downvote buttons.' + '``' + '\n' + '``' + '!custompoll - Makes a poll with custom upvote and downvote buttons.' + '``')
 	.setThumbnail('https://cole.needs.rest/korm0zu8i9a.svg')
 
@@ -204,16 +208,71 @@ const embed = new Discord.MessageEmbed()
 }
 });
 
-client.on('message', message => {
-  if (message.content.startsWith('!poll')) {
-    const prefix = '!'
-    const args = message.content.slice(prefix.length).trim().split(' ');
-   
-   message.channel.send(args.splice(1).join(" ")).then(message => {
-    message.react("<:upvote:843572083493568512>")
-    message.react("<:downvote:843572083266813992>")
-   })
-}
+
+   client.on('message', async (message) => {
+    if (message.content.startsWith('!poll')) {
+      const args = message.content.slice(prefix.length).trim().split(' ');
+  
+        message.channel.send(args.splice(1).join(" ")).then(message => {
+    message.react(`<:upvote:843572083493568512>`)
+    message.react(`<:downvote:843572083266813992>`)
+   });
+    }
+   });
+
+   client.on('message', async (message) => {
+    if (message.content.startsWith('!newpoll')) {
+      const args = message.content.slice(prefix.length).trim().split(' ');
+        let btn = new disbut.MessageButton()
+            btn.setLabel('⬆️');
+            btn.setStyle('blurple')
+            btn.setID('upvote');
+        let btn2 = new disbut.MessageButton()
+            btn2.setLabel('⬇️')
+            btn2.setStyle('blurple') 
+            btn2.setID('downvote')
+
+        let btn3 = new disbut.MessageButton()
+            btn3.setLabel('📝')
+            btn3.setStyle('blurple') 
+            btn3.setID('report')
+        message.channel.send(`${args.splice(1).join(" ")}`, {
+  buttons: [
+    btn, btn2, btn3
+  ]
+});
+    }
+});
+
+
+client.on('clickButton', async (button) => {
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+    if (button.id == 'upvote') {
+      await button.think(true);
+      let clicker = button.clicker
+      setTimeout(() => {
+            button.reply.edit(`Thanks for upvoting!`);
+        }, 1000);
+
+    }
+
+    if (button.id == 'downvote') {
+      await button.think(true);
+      let clicker = button.clicker
+      setTimeout(() => {
+            button.reply.edit(`Hey! If you find someones poll offensive, press the report button.`);
+        }, 1000);
+
+    }
+
+    if (button.id == 'report') {
+      await button.think(true);
+      setTimeout(() => {
+
+            button.reply.edit(`Coming soon...`);
+        }, 1000);
+
+    }
 });
 
 client.on('message', message => {
@@ -227,13 +286,6 @@ client.on('message', message => {
    })
 }
 });
-
-client.on('message', (message) => {
-if (message.content.startsWith('!invite')) {
-message.channel.send('Invite our bot to your server! \n https://discord.com/oauth2/authorize?client_id=842062905905250364&permissions=8&scope=bot')
-}
-});
-
 
 client.on("message", (message) => {
   if (message.content.startsWith("!say")) {
