@@ -61,8 +61,38 @@ for (var i = 0; i < activeaffiliate.length; i++) {
 });
 
 client.on('message', message => {
+if (message.content.startsWith('!bio')) {
+  const activeaffiliate = ["fireyjs"]
+for (var i = 0; i < activeaffiliate.length; i++) {
+  if (message.content.includes(activeaffiliate[i])) {
+    const args = message.content.slice(prefix.length).trim().split(' ');
+    if (args.splice(1) == 'fireyjs') {
+    let btnfirey = new disbut.MessageButton() // upvote button
+            btnfirey.setLabel('Website');
+            btnfirey.setStyle('url')
+            btnfirey.setID('websitefirey');
+            btnfirey.setURL('https://sharknix.github.io');
+        let btn2firey = new disbut.MessageButton() // downvote button
+            btn2firey.setLabel('Friend Me')
+            btn2firey.setStyle('blurple') 
+            btn2firey.setID('friendfirey')
+
+    message.channel.send('**About Me**\nI am a front end developer born in Ontario, Canada with a passion of coding. I have made 3 bots, TweetBot, U-Bot, and M-Bot.', {
+  buttons: [
+    btnfirey, btn2firey
+  ]
+})
+    }
+    } else {
+    message.lineReplyNoMention('<:uncheck:848326675687407616> You sent an invalid bio name.')
+  }
+}
+}
+});
+
+client.on('message', message => {
 if (message.content.startsWith('!')) {
-if (message.content == '!help moderation' || message.content == '!help polls' || message.content == '!help utility' || message.content == '!help' || message.content.startsWith('!avatar') || message.content == '!play' || message.content.startsWith('!dm') || message.content.startsWith('!kick') || message.content.startsWith('!poll') || message.content.startsWith('!custompoll') || message.content == '!help server' || message.content.startsWith('!status') || message.content == '!serverinfo' || message.content == '!invite' || message.content.startsWith('!say') || message.content.startsWith('!c') || message.content.startsWith('!clear') || message.content.startsWith('!whois') || message.content == '!ping' || message.content.startsWith('!botnick') || message.content.startsWith('!aff')) {
+if (message.content == '!help moderation' || message.content == '!help polls' || message.content == '!help utility' || message.content == '!help' || message.content.startsWith('!avatar') || message.content == '!play' || message.content.startsWith('!dm') || message.content.startsWith('!kick') || message.content.startsWith('!poll') || message.content.startsWith('!custompoll') || message.content == '!help server' || message.content.startsWith('!status') || message.content == '!serverinfo' || message.content == '!invite' || message.content.startsWith('!say') || message.content.startsWith('!c') || message.content.startsWith('!clear') || message.content.startsWith('!whois') || message.content == '!ping' || message.content.startsWith('!botnick') || message.content.startsWith('!aff') || message.content.startsWith('!newpoll')) {
   return
   } else {
     var commands = ["help moderation", "help polls", "help utility", "whois", "dm", "play", "kick", "clear", "c", "say", "ping", "botnick", "help"][Math.floor(Math.random() * 13)];
@@ -265,6 +295,14 @@ client.on('clickButton', async (button) => {
 
     }
 
+    if (button.id == 'friendfirey') {
+      await button.think(true);
+      setTimeout(() => {
+            button.reply.edit(`***FireyJS ツ User Info***\nUsername: FireyJS ツ#7685\nAverage Response Time: 1-2 mins`);
+        }, 1000);
+
+    }
+
     if (button.id == 'report') {
       await button.think(true);
       setTimeout(() => {
@@ -410,6 +448,7 @@ if (message.mentions.users.first()) {
 message.channel.send(`${user.displayAvatarURL()}`)
 }
 });
+
 
 client.login(token);
 keepAlive();
