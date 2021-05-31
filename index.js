@@ -1,6 +1,6 @@
 // Main File.
 const Discord = require('discord.js');
-require('discord-reply');
+const reply = require('discord-reply');
 const client = new Discord.Client;
 const disbut = require('discord-buttons')(client);
 const token = process.env.TOKEN;
@@ -9,14 +9,19 @@ const botowner = '511699466399514627';
 function keepAlive() {
   require('./server.js');
 }
+const { EventEmitter } = require('events');
+const emitter = new EventEmitter();
 
+//Setting the listeners to Infinity
+emitter.setMaxListeners(0);
+
+//To validate the number of listeners listening to event you may log the below line
+emitter.listenerCount('message');
 
 client.on('ready', () => {
+  client.setMaxListeners(50);
   console.log(`Logged in as ${client.user.tag}! Status: ${client.user.presence.status}`);
-  client.user.setStatus('dnd');
-  setInterval(function(){
-        client.user.setActivity(`!help | Guilds: ${client.guilds.cache.size} | vpnai.net`);
-        }, 1000);
+        client.user.setActivity(`!help | Guilds: ${client.guilds.cache.size} | vpnai.net`)
 });
 
 client.on('message', message => {
@@ -173,10 +178,10 @@ if (message.content.startsWith('!dm')) {
     const prefix = '!'
     const args = message.content.slice(prefix.length).trim().split(' ');
     const target = message.mentions.users.first()
-if(!target) return message.channel.send("You didnt state the user to send the DM to!")
+if(!target) return message.channel.send("You did not state the user to send the DM to!")
 
 const msgs = args.splice(2).join(" ")
-if(!msgs) return message.channel.send('You Didnt State the Message you want to send the user')
+if(!msgs) return message.channel.send('You did not state the message you want to send the user.')
 
 if(message.attachments.size > 0){
     var Attachment = message.attachments.array();
@@ -196,26 +201,6 @@ if(message.attachments.size > 0){
 }
 });
 
-client.on('message', (message) => {
-  // if the message doesn't start with the prefix or the author is a bot, exit early
-  const prefix = '!';
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-  // create an args variable that slices off the prefix and splits it into an array
-  const args = message.content.slice(prefix.length).split(/ +/);
-  // create a command variable by taking the first element in the array
-  // and removing it from args
-  const command = args.shift().toLowerCase();
-
-  if (command === 'status') {
-    // if the message author has no permission, send a message and exit
-    if (!message.author.id === botowner)
-      return message.channel.send('Your not the Admin of the server or bot!');
-     } else {
-     const activity = args.join(' ');
-    client.user.setStatus(activity);
-     }
-  });
 
 client.on("message", (message) => {
     if (message.content.startsWith("!play")) {
@@ -323,17 +308,12 @@ client.on('message', message => {
     message.react(`${args[2]}`)
    })
 }
-});
-
-client.on("message", (message) => {
   if (message.content.startsWith("!say")) {
 const args = message.content.slice(prefix.length).trim().split(' ');
 
 message.channel.send(args.splice(1).join(" "))
   }
-  });
-
-  client.on('message', (message) => {
+ 
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content
@@ -389,15 +369,11 @@ message.channel.send(args.splice(1).join(" "))
         });
     });
   }
-  });
 
-client.on('message', message => {
 if (message.content === "!ping") {
 message.channel.send(`⏱| Pong! Ping is **${client.ws.ping}ms**.`)
 }
-});
 
-client.on('message', message => {
 if (message.content.startsWith('!whois')) {
 let user;
 if (message.mentions.users.first()) {
@@ -421,22 +397,7 @@ const whoisembed = new Discord.MessageEmbed()
     .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
 message.channel.send(whoisembed);
 }
-});
 
-client.on('message', message => {
-  if (message.content.startsWith('!botnick')) {
-    const args = message.content.slice(prefix.length).trim().split(' ');
-    if (message.author.id == botowner) {
-    client.user.setUsername(args.splice(1).join(" "));
-    message.channel.send(`Changed Bot Nickname to ${client.username}`)
-    message.catch(err)
-    } else {
-      message.channel.send(`${message.author.username}, you are not the owner of the bot!`)
-    }
-  }
-});
-
-client.on('message', (message) => {
 if (message.content.startsWith('!avatar')) {
 let user;
 if (message.mentions.users.first()) {
