@@ -6,6 +6,8 @@ const disbut = require('discord-buttons')(client);
 const token = process.env.TOKEN;
 const prefix = '!';
 const botowner = '511699466399514627';
+const simpleGit = require('simple-git');
+const git = simpleGit();
 function keepAlive() {
   require('./server.js');
 }
@@ -48,6 +50,14 @@ let button = new disbut.MessageButton()
 });
 }
 });
+
+client.on('message', message => {
+if (message.content.startsWith('!commit')) {
+ const args = message.content.slice(prefix.length.trim().split(' ');
+git.commit(args[1], handlerFn)
+}
+});
+
 
 client.on('message', message => {
 if (message.content.startsWith('!aff')) {
